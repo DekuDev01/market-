@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* CSS (Cascading Style Sheets) untuk Tampilan */
+        /* CSS - Tema Biru (Kembali seperti semula) dengan fitur Open/Close */
 
-        /* 1. Variabel Warna & Reset Dasar */
+        /* 1. Variabel Warna Biru & Reset Dasar */
         :root {
             --biru-muda: #00bfff;
             --biru-tua: #0077b6;
@@ -23,6 +23,7 @@
             --text-color: #e0e0e0;
             --text-muted-color: #a0a0a0;
             --border-color: #30363d;
+            --danger-color: #ef4444;
         }
 
         * {
@@ -81,23 +82,31 @@
             box-shadow: 0 4px 15px rgba(0, 191, 255, 0.2);
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
         }
 
-        .btn:active {
+        .btn:active:not(:disabled) {
             transform: translateY(-1px) scale(0.98);
             box-shadow: 0 2px 10px rgba(0, 191, 255, 0.3);
         }
         
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(0.2);
+            transform: none;
+            box-shadow: none;
+        }
+
         .btn-secondary {
             background: var(--surface-color);
             border: 1px solid var(--biru-tua);
             color: var(--biru-muda);
             box-shadow: none;
         }
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
              background: rgba(0, 120, 182, 0.2);
              box-shadow: none;
         }
@@ -288,7 +297,7 @@
             margin-top: 20px;
         }
 
-        /* 6. Styling Halaman Produk */
+        /* 6. Styling Halaman Produk dengan Status Open/Close */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -302,6 +311,7 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .product-card:hover {
@@ -314,6 +324,27 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
+        }
+
+        /* Badge status (tetap menggunakan warna hijau/merah, tidak diubah ke biru) */
+        .product-status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--biru-tua);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .product-status-badge.closed {
+            background-color: var(--danger-color);
+        }
+        .product-status-badge.open {
+            background-color: #10b981;
         }
 
         .product-info {
@@ -456,7 +487,6 @@
             .logo-text { display: none; }
         }
 
-        /* === PERUBAHAN: Menambahkan Styling untuk Loading Screen === */
         /* 11. Loading Screen */
         .loader-wrapper {
             position: fixed;
@@ -498,31 +528,18 @@
         }
 
         @keyframes pulse-logo {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 25px rgba(0, 191, 255, 1);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
-            }
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 191, 255, 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(0, 191, 255, 1); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 191, 255, 0.6); }
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
     </style>
 </head>
 <body>
 
-    <!-- === PERUBAHAN: Menambahkan Elemen HTML untuk Loading Screen === -->
+    <!-- Loading Screen -->
     <div class="loader-wrapper">
         <img src="https://i.postimg.cc/tJW90fvd/6d3cdbb4f21305cab619a96ab6d4b2b8.jpg" alt="Loading..." class="loader-logo">
         <div class="loader-spinner"></div>
@@ -551,7 +568,7 @@
         <div id="home-page" class="page active">
             <section class="hero">
                 <div class="container">
-                    <h1 class="animate-on-scroll">Solusi Digital, <span>Cepat</span> & Terpercaya</h1>
+                    <h1 class="animate-on-scroll">Pusat Uid cantik, <span>Aman</span> & Terpercaya</h1>
                     <p class="animate-on-scroll">Selamat datang di Dekuu Market. Jelajahi berbagai produk digital berkualitas tinggi dengan proses super cepat dan layanan support yang responsif.</p>
                     <a href="#" class="btn nav-link animate-on-scroll" data-page="products-page">Mulai Belanja <i class="fas fa-arrow-right"></i></a>
                 </div>
@@ -638,6 +655,224 @@
     </div>
 
     <script>
-    const _0x550c14=_0x98d3;function _0x579a(){const _0x4a7b55=['quantity-change','currency','cart-total-price','observe','visible','innerHTML','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22quantity-change\x22\x20data-id=\x22','quantity','NumberFormat','Murid\x20Bug\x20WhatsApp','telegramUsername','.page.active','182GWQfNx','info-group','join','scrollTo','Alight\x20Motion\x20Premium\x201tahun','remove','style','.loader-wrapper','DOMContentLoaded','target','textContent','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22cart-item-actions\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22quantity-change\x22\x20data-id=\x22','cart-sidebar','cart-items','SC\x20Generate\x20Account\x20Free\x20Fire','Jasdit\x20Profile','length','querySelector','add','removeChild','Jasa\x20Kenon\x20WhatsApp','\x22\x20data-change=\x221\x22>+</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','find','296FHUuap','dataset','scale(1.2)','whatsappChannelLink','438WkQaLK','whatsappGroupLink','addEventListener','7598420vlQGlT','*\x0a\x0aTerima\x20kasih.','_blank','209456depsoA','Nokos\x20All\x20Negara','name','2629080kysxyl','parentNode','<div\x20class=\x22empty-cart-message\x22><i\x20class=\x22fas\x20fa-shopping-cart\x22></i><p>Keranjang\x20Anda\x20kosong.</p></div>','Jasa\x20Bug\x20WhatsApp','close-cart','whatsappNumber','https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg','195350wsjEia','https://t.me/','*•\x20','https://wa.me/','querySelectorAll','@xxnathaviel','image','</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22product-price\x22>','3205hGLosS','\x22\x20loading=\x22lazy\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22product-info\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3>','change','forEach','href','Murid\x20Nokos','Murid\x20Website','open','Jasa\x20Suntik\x20Sosmed','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22cart-item-info\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4>','active','closest','6212345678','classList','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22cart-item\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22','Jasa\x20Edit','price','findIndex','transform','https://whatsapp.com/channel/0029Vb7lLK5BA1eyJIRS3l0J','Keranjang\x20Anda\x20kosong.','Aplikasi\x20Premium','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22product-card\x20animate-on-scroll\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20src=\x22','preventDefault','product-list','.page','getElementById','.add-to-cart','\x0a*Total\x20Pesanan:\x20','IDR','id-ID','support-whatsapp','11436HixNFy','reduce','hidden','click','contains','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn\x20add-to-cart\x22\x20data-id=\x22','\x22\x20alt=\x22','splice','3375144GXNKQN','*\x20(','map','page','cart-count'];_0x579a=function(){return _0x4a7b55;};return _0x579a();}function _0x98d3(_0x374fb5,_0x1831c9){_0x374fb5=_0x374fb5-0x1de;const _0x579a7f=_0x579a();let _0x98d36d=_0x579a7f[_0x374fb5];return _0x98d36d;}(function(_0x7ad3c6,_0x29ad0d){const _0x2db4dc=_0x98d3,_0x22861b=_0x7ad3c6();while(!![]){try{const _0x2f9226=-parseInt(_0x2db4dc(0x235))/0x1+parseInt(_0x2db4dc(0x1f1))/0x2*(-parseInt(_0x2db4dc(0x225))/0x3)+-parseInt(_0x2db4dc(0x221))/0x4*(parseInt(_0x2db4dc(0x23d))/0x5)+parseInt(_0x2db4dc(0x1f9))/0x6+-parseInt(_0x2db4dc(0x20a))/0x7*(-parseInt(_0x2db4dc(0x22b))/0x8)+-parseInt(_0x2db4dc(0x22e))/0x9+parseInt(_0x2db4dc(0x228))/0xa;if(_0x2f9226===_0x29ad0d)break;else _0x22861b['push'](_0x22861b['shift']());}catch(_0x14351f){_0x22861b['push'](_0x22861b['shift']());}}}(_0x579a,0x9aa16),document['addEventListener'](_0x550c14(0x212),()=>{const _0x518a47=_0x550c14,_0x55241b=document['querySelector'](_0x518a47(0x211));_0x55241b&&(_0x55241b[_0x518a47(0x1de)][_0x518a47(0x21c)](_0x518a47(0x1f3)),setTimeout(()=>{const _0x2258fc=_0x518a47;_0x55241b[_0x2258fc(0x22f)]&&_0x55241b[_0x2258fc(0x22f)][_0x2258fc(0x21d)](_0x55241b);},0x2bc));const _0x3c578a={'whatsappNumber':_0x518a47(0x249),'telegramUsername':_0x518a47(0x23a),'whatsappChannelLink':_0x518a47(0x1e4),'whatsappGroupLink':'https://chat.whatsapp.com/JW86Zr1HrClGkUNWMdkKjW'},_0x594f57=[{'id':0x1,'name':_0x518a47(0x20e),'price':0x2710,'image':_0x518a47(0x234)},{'id':0x2,'name':_0x518a47(0x1e0),'price':0x61a8,'image':'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg'},{'id':0x3,'name':_0x518a47(0x219),'price':0x4e20,'image':_0x518a47(0x234)},{'id':0x4,'name':_0x518a47(0x231),'price':0x3a98,'image':_0x518a47(0x234)},{'id':0x5,'name':_0x518a47(0x207),'price':0x2710,'image':_0x518a47(0x234)},{'id':0x6,'name':_0x518a47(0x21e),'price':0x1388,'image':'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg'},{'id':0x7,'name':_0x518a47(0x218),'price':0xfa0,'image':_0x518a47(0x234)},{'id':0x8,'name':'Jasa\x20Website','price':0x1f40,'image':_0x518a47(0x234)},{'id':0x9,'name':_0x518a47(0x245),'price':0x1388,'image':_0x518a47(0x234)},{'id':0xa,'name':_0x518a47(0x22c),'price':0x1388,'image':_0x518a47(0x234)},{'id':0xb,'name':_0x518a47(0x1e6),'price':0x1388,'image':_0x518a47(0x234)},{'id':0xc,'name':_0x518a47(0x243),'price':0x1388,'image':_0x518a47(0x234)},{'id':0xd,'name':'Murid\x20Suntik','price':0xbb8,'image':_0x518a47(0x234)},{'id':0xe,'name':_0x518a47(0x242),'price':0xbb8,'image':_0x518a47(0x234)}],_0x4493be=document[_0x518a47(0x239)]('.nav-link'),_0x156470=document[_0x518a47(0x239)](_0x518a47(0x1ea)),_0x5b8aed=document['getElementById'](_0x518a47(0x1e9)),_0xa0a689=document[_0x518a47(0x1eb)]('cart-icon'),_0x166bea=document[_0x518a47(0x1eb)](_0x518a47(0x216)),_0x55282a=document[_0x518a47(0x1eb)](_0x518a47(0x232)),_0x34fe8e=document['getElementById'](_0x518a47(0x217)),_0x242088=document['getElementById'](_0x518a47(0x1fd)),_0xda61a9=document[_0x518a47(0x1eb)](_0x518a47(0x200)),_0xb54bb9=document['getElementById']('checkout-whatsapp');let _0x4bc2f4=[];const _0x2fb2ef=new IntersectionObserver(_0x505430=>{const _0x5712aa=_0x518a47;_0x505430[_0x5712aa(0x240)](_0x4491c5=>{const _0x5d4356=_0x5712aa;_0x4491c5['isIntersecting']&&(_0x4491c5[_0x5d4356(0x213)][_0x5d4356(0x1de)]['add'](_0x5d4356(0x202)),_0x2fb2ef['unobserve'](_0x4491c5[_0x5d4356(0x213)]));});},{'threshold':0.1}),_0x434e0d=_0x12a4e4=>{const _0x25b7ae=_0x518a47,_0x19a7ef=_0x12a4e4[_0x25b7ae(0x239)]('.animate-on-scroll');_0x19a7ef[_0x25b7ae(0x240)](_0x3c34e1=>_0x2fb2ef[_0x25b7ae(0x201)](_0x3c34e1));},_0x267dc7=()=>{const _0x224375=_0x518a47,_0x527aa6=_0x594f57[_0x224375(0x1fb)](_0x3bf1fe=>{if(_0x3bf1fe['id']===0x7)return{..._0x3bf1fe,'image':'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg'};return _0x3bf1fe;});_0x5b8aed[_0x224375(0x203)]=_0x527aa6[_0x224375(0x1fb)](_0x2c826f=>_0x224375(0x1e7)+_0x2c826f['image']+'\x22\x20alt=\x22'+_0x2c826f['name']+_0x224375(0x23e)+_0x2c826f[_0x224375(0x22d)]+_0x224375(0x23c)+_0x2b4a4d(_0x2c826f['price'])+_0x224375(0x1f6)+_0x2c826f['id']+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-cart-plus\x22></i>\x20Tambah\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20')[_0x224375(0x20c)](''),_0x434e0d(_0x5b8aed);},_0x79dd62=()=>{const _0x1d7204=_0x518a47;document[_0x1d7204(0x1eb)](_0x1d7204(0x1f0))[_0x1d7204(0x241)]=_0x1d7204(0x238)+_0x3c578a[_0x1d7204(0x233)]+'?text=Halo%20Dekuu%20Market,%20saya%20butuh%20bantuan.',document[_0x1d7204(0x1eb)]('support-telegram')[_0x1d7204(0x241)]=_0x1d7204(0x236)+_0x3c578a[_0x1d7204(0x208)],document[_0x1d7204(0x1eb)]('info-channel')[_0x1d7204(0x241)]=_0x3c578a[_0x1d7204(0x224)],document[_0x1d7204(0x1eb)](_0x1d7204(0x20b))[_0x1d7204(0x241)]=_0x3c578a[_0x1d7204(0x226)];},_0x2b4a4d=_0x5de7b2=>new Intl[(_0x518a47(0x206))](_0x518a47(0x1ef),{'style':_0x518a47(0x1ff),'currency':_0x518a47(0x1ee),'minimumFractionDigits':0x0})['format'](_0x5de7b2),_0x50ae9b=_0x22dad8=>{const _0x30fe17=_0x518a47;_0x156470[_0x30fe17(0x240)](_0x2e084f=>_0x2e084f['classList'][_0x30fe17(0x20f)](_0x30fe17(0x247)));const _0x143c86=document[_0x30fe17(0x1eb)](_0x22dad8);_0x143c86&&(_0x143c86['classList'][_0x30fe17(0x21c)](_0x30fe17(0x247)),_0x434e0d(_0x143c86)),_0x4493be[_0x30fe17(0x240)](_0x327192=>{const _0x7843bd=_0x30fe17;_0x327192[_0x7843bd(0x1de)][_0x7843bd(0x20f)](_0x7843bd(0x247)),_0x327192[_0x7843bd(0x222)][_0x7843bd(0x1fc)]===_0x22dad8&&_0x327192[_0x7843bd(0x1de)][_0x7843bd(0x21c)](_0x7843bd(0x247));}),window[_0x30fe17(0x20d)](0x0,0x0);},_0x3d431a=()=>{const _0xa26f1f=_0x518a47;_0x4bc2f4[_0xa26f1f(0x21a)]===0x0?_0x34fe8e[_0xa26f1f(0x203)]=_0xa26f1f(0x230):_0x34fe8e[_0xa26f1f(0x203)]=_0x4bc2f4[_0xa26f1f(0x1fb)](_0x54aeef=>_0xa26f1f(0x1df)+_0x54aeef[_0xa26f1f(0x23b)]+_0xa26f1f(0x1f7)+_0x54aeef[_0xa26f1f(0x22d)]+_0xa26f1f(0x246)+_0x54aeef['name']+'</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p>'+_0x2b4a4d(_0x54aeef[_0xa26f1f(0x1e1)])+_0xa26f1f(0x215)+_0x54aeef['id']+'\x22\x20data-change=\x22-1\x22>-</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>'+_0x54aeef[_0xa26f1f(0x205)]+_0xa26f1f(0x204)+_0x54aeef['id']+_0xa26f1f(0x21f))[_0xa26f1f(0x20c)](''),_0x546a78();},_0x546a78=()=>{const _0x16847f=_0x518a47,_0x35a9b5=_0x4bc2f4[_0x16847f(0x1f2)]((_0x3adbfe,_0x4d3c12)=>_0x3adbfe+_0x4d3c12[_0x16847f(0x205)],0x0),_0x48a3fb=_0x4bc2f4[_0x16847f(0x1f2)]((_0x638d09,_0x5995df)=>_0x638d09+_0x5995df[_0x16847f(0x1e1)]*_0x5995df['quantity'],0x0);_0x242088[_0x16847f(0x214)]=_0x35a9b5,_0xda61a9[_0x16847f(0x214)]=_0x2b4a4d(_0x48a3fb),_0x242088[_0x16847f(0x210)][_0x16847f(0x1e3)]=_0x16847f(0x223),setTimeout(()=>{const _0x4f7924=_0x16847f;_0x242088[_0x4f7924(0x210)]['transform']='scale(1)';},0x96);},_0x3f9dec=_0x435e17=>{const _0x45fab0=_0x518a47,_0x444d55=_0x594f57['find'](_0x3b4ca8=>_0x3b4ca8['id']===_0x435e17);if(!_0x444d55)return;const _0x5c139f=_0x4bc2f4[_0x45fab0(0x220)](_0xf220ce=>_0xf220ce['id']===_0x435e17);_0x5c139f?_0x5c139f[_0x45fab0(0x205)]++:_0x4bc2f4['push']({..._0x444d55,'quantity':0x1}),_0x3d431a(),_0x166bea[_0x45fab0(0x1de)]['add'](_0x45fab0(0x247));},_0x1d4151=(_0x2c781f,_0x2fece0)=>{const _0x4d2153=_0x518a47,_0x180c29=_0x4bc2f4[_0x4d2153(0x1e2)](_0x664fba=>_0x664fba['id']===_0x2c781f);_0x180c29>-0x1&&(_0x4bc2f4[_0x180c29][_0x4d2153(0x205)]+=_0x2fece0,_0x4bc2f4[_0x180c29][_0x4d2153(0x205)]<=0x0&&_0x4bc2f4[_0x4d2153(0x1f8)](_0x180c29,0x1)),_0x3d431a();},_0x801a26=()=>{const _0x1c8c8f=_0x518a47;if(_0x4bc2f4[_0x1c8c8f(0x21a)]===0x0)return _0x1c8c8f(0x1e5);let _0x5e5f26='👋Halo\x20*Dekuu\x20Market*,\x0aSaya\x20ingin\x20memesan\x20produk\x20berikut:\x0a\x0a',_0x4a21ee=0x0;return _0x4bc2f4['forEach'](_0x4f186f=>{const _0x15b4c1=_0x1c8c8f,_0x3efaca=_0x4f186f['price']*_0x4f186f[_0x15b4c1(0x205)];_0x5e5f26+=_0x15b4c1(0x237)+_0x4f186f[_0x15b4c1(0x22d)]+_0x15b4c1(0x1fa)+_0x4f186f['quantity']+'x)\x0a\x20\x20\x20Subtotal:\x20'+_0x2b4a4d(_0x3efaca)+'\x0a',_0x4a21ee+=_0x3efaca;}),_0x5e5f26+=_0x1c8c8f(0x1ed)+_0x2b4a4d(_0x4a21ee)+_0x1c8c8f(0x229),_0x5e5f26;};_0x4493be['forEach'](_0x14c8a8=>{const _0x3d4df3=_0x518a47;_0x14c8a8[_0x3d4df3(0x227)](_0x3d4df3(0x1f4),_0x52db9a=>{const _0x4f4d6e=_0x3d4df3;_0x52db9a[_0x4f4d6e(0x1e8)](),_0x50ae9b(_0x14c8a8[_0x4f4d6e(0x222)][_0x4f4d6e(0x1fc)]);});}),_0x5b8aed[_0x518a47(0x227)](_0x518a47(0x1f4),_0x3f7d96=>{const _0x283f32=_0x518a47;if(_0x3f7d96[_0x283f32(0x213)][_0x283f32(0x248)](_0x283f32(0x1ec))){const _0x3991e1=parseInt(_0x3f7d96[_0x283f32(0x213)]['closest']('.add-to-cart')[_0x283f32(0x222)]['id']);_0x3f9dec(_0x3991e1);}}),_0xa0a689[_0x518a47(0x227)](_0x518a47(0x1f4),()=>_0x166bea[_0x518a47(0x1de)][_0x518a47(0x21c)](_0x518a47(0x247))),_0x55282a[_0x518a47(0x227)](_0x518a47(0x1f4),()=>_0x166bea[_0x518a47(0x1de)][_0x518a47(0x20f)]('active')),_0x34fe8e[_0x518a47(0x227)]('click',_0x1c63ff=>{const _0x427c7a=_0x518a47;if(_0x1c63ff[_0x427c7a(0x213)][_0x427c7a(0x1de)][_0x427c7a(0x1f5)](_0x427c7a(0x1fe))){const _0xc2e91=parseInt(_0x1c63ff[_0x427c7a(0x213)][_0x427c7a(0x222)]['id']),_0x2ade83=parseInt(_0x1c63ff[_0x427c7a(0x213)][_0x427c7a(0x222)][_0x427c7a(0x23f)]);_0x1d4151(_0xc2e91,_0x2ade83);}}),_0xb54bb9[_0x518a47(0x227)]('click',()=>{const _0x5de7be=_0x518a47,_0x2d5a20=_0x801a26();_0x4bc2f4[_0x5de7be(0x21a)]>0x0?window[_0x5de7be(0x244)]('https://wa.me/'+_0x3c578a[_0x5de7be(0x233)]+'?text='+encodeURIComponent(_0x2d5a20),_0x5de7be(0x22a)):alert(_0x2d5a20);}),_0x79dd62(),_0x267dc7(),_0x3d431a(),_0x434e0d(document[_0x518a47(0x21b)](_0x518a47(0x209)));}));    </script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sembunyikan loading screen
+        const loader = document.querySelector('.loader-wrapper');
+        if (loader) {
+            loader.classList.add('hidden');
+            setTimeout(() => {
+                if (loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 700);
+        }
+
+        const config = {
+            whatsappNumber: '628503797235',
+            telegramUsername: '@xxnathaviel',
+            whatsappChannelLink: 'https://whatsapp.com/channel/0029Vb7lLK5BA1eyJIRS3l0J',
+            whatsappGroupLink: 'https://chat.whatsapp.com/JW86Zr1HrClGkUNWMdkKjW'
+        };
+
+        // Data produk dengan status open/close (beberapa contoh close)
+        const products = [
+            { id: 1, name: 'UID : 15609888511 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 2, name: 'UID : 15609889131 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 3, name: 'UID : 15609889189 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 4, name: 'UID : 15609889483 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 5, name: 'UID : 15609889613 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 6, name: 'UID : 15610171727 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 7, name: 'UID : 15610060630 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 8, name: 'UID : 15610085002', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 9, name: '15610085508', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 10, name: 'UID : 15610086664', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 11, name: 'UID : 15610089966', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 12, name: 'UID : 15610090037', price: 5000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 13, name: 'UID : 15610200518', price: 5000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 14, name: 'UID : 15610223327', price: 5000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 15, name: 'UID : 15612779999', price: 25000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 16, name: 'UID : 15612800057', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+        ];
+        
+        const pageLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const productList = document.getElementById('product-list');
+        const cartIcon = document.getElementById('cart-icon');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotalPrice = document.getElementById('cart-total-price');
+        const checkoutWaBtn = document.getElementById('checkout-whatsapp');
+
+        let cart = [];
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const initAnimations = (container) => {
+            const elements = container.querySelectorAll('.animate-on-scroll');
+            elements.forEach(el => observer.observe(el));
+        };
+        
+        // Render produk dengan badge status dan tombol dinonaktifkan jika close
+        const renderProducts = () => {
+            productList.innerHTML = products.map(product => {
+                const isClosed = product.status === 'close';
+                const badgeClass = isClosed ? 'closed' : 'open';
+                const badgeText = isClosed ? 'TUTUP' : 'BUKA';
+                const disabledAttr = isClosed ? 'disabled' : '';
+                return `
+                    <div class="product-card animate-on-scroll">
+                        <div class="product-status-badge ${badgeClass}">${badgeText}</div>
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="product-price">${formatCurrency(product.price)}</p>
+                            <button class="btn add-to-cart" data-id="${product.id}" ${disabledAttr}>
+                                <i class="fas fa-cart-plus"></i> Tambah
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            initAnimations(productList);
+        };
+
+        const setupLinks = () => {
+            document.getElementById('support-whatsapp').href = `https://wa.me/${config.whatsappNumber}?text=Halo%20Dekuu%20Market,%20saya%20butuh%20bantuan.`;
+            document.getElementById('support-telegram').href = `https://t.me/${config.telegramUsername}`;
+            document.getElementById('info-channel').href = config.whatsappChannelLink;
+            document.getElementById('info-group').href = config.whatsappGroupLink;
+        };
+
+        const formatCurrency = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+
+        const showPage = (pageId) => {
+            pages.forEach(page => page.classList.remove('active'));
+            const newPage = document.getElementById(pageId);
+            if (newPage) {
+                 newPage.classList.add('active');
+                 initAnimations(newPage);
+            }
+            pageLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageId) link.classList.add('active');
+            });
+            window.scrollTo(0, 0);
+        };
+        
+        const renderCart = () => {
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart-message"><i class="fas fa-shopping-cart"></i><p>Keranjang Anda kosong.</p></div>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${formatCurrency(item.price)}</p>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="quantity-change" data-id="${item.id}" data-change="-1">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-change" data-id="${item.id}" data-change="1">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            updateCartSummary();
+        };
+
+        const updateCartSummary = () => {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartCount.textContent = totalItems;
+            cartTotalPrice.textContent = formatCurrency(totalPrice);
+            cartCount.style.transform = 'scale(1.2)';
+            setTimeout(() => { cartCount.style.transform = 'scale(1)'; }, 150);
+        };
+
+        const addToCart = (productId) => {
+            const product = products.find(p => p.id === productId);
+            // Cegah jika status close
+            if (!product || product.status === 'close') return;
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            renderCart();
+            cartSidebar.classList.add('active');
+        };
+
+        const changeQuantity = (productId, change) => {
+            const itemIndex = cart.findIndex(item => item.id === productId);
+            if (itemIndex > -1) {
+                cart[itemIndex].quantity += change;
+                if (cart[itemIndex].quantity <= 0) cart.splice(itemIndex, 1);
+            }
+            renderCart();
+        };
+
+        const generateOrderMessage = () => {
+            if (cart.length === 0) return "Keranjang Anda kosong.";
+            let message = `👋Halo *Dekuu Market*,\nSaya ingin memesan produk berikut:\n\n`;
+            let totalPrice = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                message += `*• ${item.name}* (${item.quantity}x)\n   Subtotal: ${formatCurrency(itemTotal)}\n`;
+                totalPrice += itemTotal;
+            });
+            message += `\n*Total Pesanan: ${formatCurrency(totalPrice)}*\n\nTerima kasih.`;
+            return message;
+        };
+
+        // Event Listeners
+        pageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(link.dataset.page);
+            });
+        });
+
+        productList.addEventListener('click', (e) => {
+            const btn = e.target.closest('.add-to-cart');
+            if (btn && !btn.disabled) {
+                const productId = parseInt(btn.dataset.id);
+                addToCart(productId);
+            }
+        });
+        
+        cartIcon.addEventListener('click', () => cartSidebar.classList.add('active'));
+        closeCartBtn.addEventListener('click', () => cartSidebar.classList.remove('active'));
+
+        cartItemsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('quantity-change')) {
+                const productId = parseInt(e.target.dataset.id);
+                const change = parseInt(e.target.dataset.change);
+                changeQuantity(productId, change);
+            }
+        });
+
+        checkoutWaBtn.addEventListener('click', () => {
+            const message = generateOrderMessage();
+            if (cart.length > 0) {
+                window.open(`https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            } else { alert(message); }
+        });
+
+        // Inisialisasi
+        setupLinks();
+        renderProducts();
+        renderCart();
+        initAnimations(document.querySelector('.page.active'));
+    });
+    </script>
 </body>
 </html>

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* CSS - Tema Biru (Kembali seperti semula) dengan fitur Open/Close */
+        /* CSS - Tema Biru dengan label For Sale / Sold */
 
         /* 1. Variabel Warna Biru & Reset Dasar */
         :root {
@@ -24,6 +24,8 @@
             --text-muted-color: #a0a0a0;
             --border-color: #30363d;
             --danger-color: #ef4444;
+            --sold-color: #ef4444;
+            --forsale-color: #10b981;
         }
 
         * {
@@ -297,7 +299,7 @@
             margin-top: 20px;
         }
 
-        /* 6. Styling Halaman Produk dengan Status Open/Close */
+        /* 6. Styling Halaman Produk dengan Status For Sale / Sold */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -326,7 +328,7 @@
             object-fit: cover;
         }
 
-        /* Badge status (tetap menggunakan warna hijau/merah, tidak diubah ke biru) */
+        /* Badge status: For Sale (hijau) / Sold (merah) */
         .product-status-badge {
             position: absolute;
             top: 12px;
@@ -340,10 +342,10 @@
             z-index: 2;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
-        .product-status-badge.closed {
+        .product-status-badge.sold {
             background-color: var(--danger-color);
         }
-        .product-status-badge.open {
+        .product-status-badge.forsale {
             background-color: #10b981;
         }
 
@@ -672,9 +674,9 @@
             whatsappGroupLink: 'https://chat.whatsapp.com/JW86Zr1HrClGkUNWMdkKjW'
         };
 
-        // Data produk dengan status open/close (beberapa contoh close)
-        const products = [
-            { id: 1, name: 'UID : 15609888511 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+        // Data produk dengan status: 'open' = For Sale, 'close' = Sold
+        // Untuk demo, beberapa produk dijadikan 'close' (Sold) agar terlihat perbedaannya
+        const products = [{ id: 1, name: 'UID : 15609888511 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 2, name: 'UID : 15609889131 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 3, name: 'UID : 15609889189 ', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 4, name: 'UID : 15609889483 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
@@ -682,7 +684,7 @@
             { id: 6, name: 'UID : 15610171727 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 7, name: 'UID : 15610060630 ', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 8, name: 'UID : 15610085002', price: 15000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
-            { id: 9, name: 'UID : 15610085508', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
+            { id: 9, name: '15610085508', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 10, name: 'UID : 15610086664', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 11, name: 'UID : 15610089966', price: 10000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
             { id: 12, name: 'UID : 15610090037', price: 5000, image: 'https://i.postimg.cc/XXStwY82/3834ad99382204c5e20c68021dacf9dc.jpg', status: 'open' },
@@ -719,13 +721,13 @@
             elements.forEach(el => observer.observe(el));
         };
         
-        // Render produk dengan badge status dan tombol dinonaktifkan jika close
+        // Render produk dengan badge "FOR SALE" atau "SOLD"
         const renderProducts = () => {
             productList.innerHTML = products.map(product => {
-                const isClosed = product.status === 'close';
-                const badgeClass = isClosed ? 'closed' : 'open';
-                const badgeText = isClosed ? 'TUTUP' : 'BUKA';
-                const disabledAttr = isClosed ? 'disabled' : '';
+                const isSold = product.status === 'close';  // close = sold
+                const badgeClass = isSold ? 'sold' : 'forsale';
+                const badgeText = isSold ? 'SOLD' : 'FOR SALE';
+                const disabledAttr = isSold ? 'disabled' : '';
                 return `
                     <div class="product-card animate-on-scroll">
                         <div class="product-status-badge ${badgeClass}">${badgeText}</div>
@@ -799,7 +801,7 @@
 
         const addToCart = (productId) => {
             const product = products.find(p => p.id === productId);
-            // Cegah jika status close
+            // Cegah jika status close (sold)
             if (!product || product.status === 'close') return;
             const existingItem = cart.find(item => item.id === productId);
             if (existingItem) {
